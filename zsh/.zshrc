@@ -33,7 +33,6 @@ plugins=(
     zsh-autosuggestions
     zsh-syntax-highlighting
     kubectl-autocomplete
-    gradle-completion
     fzf
 )
 
