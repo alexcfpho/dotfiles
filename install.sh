@@ -97,7 +97,13 @@ if command -v tfenv >/dev/null 2>&1; then
   tfenv use "$(cat "$DOTFILES_DIR/config/tfenv/version")"
 fi
 
-# --- 11. Default shell ---
+# --- 11. Claude Code status line ---
+log "Linking Claude Code status line"
+mkdir -p "$HOME/.claude"
+ln -sf "$DOTFILES_DIR/claude/statusline.sh" "$HOME/.claude/statusline.sh"
+ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
+
+# --- 12. Default shell ---
 if [[ "$SHELL" != */zsh ]]; then
   log "Setting default shell to zsh"
   chsh -s "$(command -v zsh)"
