@@ -1,8 +1,6 @@
 # Homebrew bundle file — reproduces the formulae/casks this setup depends on.
 # Install everything with: brew bundle --file=~/dotfiles/Brewfile
 
-tap "homebrew/services"
-
 # --- CLI tools ---
 brew "asciinema"
 brew "autojump"
