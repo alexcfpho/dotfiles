@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Reproduces this machine's Ghostty + zsh setup on a fresh Mac.
+# Reproduces this machine's Ghostty, zsh, nvim, tmux, zed, and starship
+# config on a fresh Mac.
 # Idempotent: safe to re-run.
 #
 # Usage: ./install.sh
@@ -70,7 +71,37 @@ mkdir -p "$HOME/.config/ghostty"
 ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 clone_or_update https://github.com/hackr-sh/ghostty-shaders "$HOME/.config/ghostty/shaders"
 
-# --- 7. Default shell ---
+# --- 7. nvim (LazyVim config) ---
+log "Linking nvim config"
+if [[ -e "$HOME/.config/nvim" && ! -L "$HOME/.config/nvim" ]]; then
+  mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak.$(date +%s)"
+fi
+ln -sfn "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
+
+# --- 8. tmux (oh-my-tmux + local overrides) ---
+clone_or_update https://github.com/gpakosz/.tmux "$HOME/.local/share/tmux/oh-my-tmux"
+mkdir -p "$HOME/.config/tmux"
+ln -sf "$HOME/.local/share/tmux/oh-my-tmux/.tmux.conf" "$HOME/.config/tmux/tmux.conf"
+ln -sf "$DOTFILES_DIR/config/tmux/tmux.conf.local" "$HOME/.config/tmux/tmux.conf.local"
+
+# --- 9. zed ---
+log "Linking Zed config"
+mkdir -p "$HOME/.config/zed/themes"
+ln -sf "$DOTFILES_DIR/config/zed/settings.json" "$HOME/.config/zed/settings.json"
+ln -sf "$DOTFILES_DIR/config/zed/themes/catppuccin-green.json" "$HOME/.config/zed/themes/catppuccin-green.json"
+
+# --- 10. starship ---
+log "Linking starship config"
+ln -sf "$DOTFILES_DIR/config/starship.toml" "$HOME/.config/starship.toml"
+
+# --- 11. tfenv pinned version ---
+if command -v tfenv >/dev/null 2>&1; then
+  log "Installing pinned terraform version via tfenv"
+  tfenv install "$(cat "$DOTFILES_DIR/config/tfenv/version")"
+  tfenv use "$(cat "$DOTFILES_DIR/config/tfenv/version")"
+fi
+
+# --- 12. Default shell ---
 if [[ "$SHELL" != */zsh ]]; then
   log "Setting default shell to zsh"
   chsh -s "$(command -v zsh)"
