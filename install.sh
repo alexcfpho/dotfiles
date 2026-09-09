@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Reproduces this machine's Ghostty, zsh, nvim, tmux, zed, and starship
-# config on a fresh Mac.
+# Reproduces this machine's Ghostty, zsh, nvim, tmux, and zed config on a
+# fresh Mac.
 # Idempotent: safe to re-run.
 #
 # Usage: ./install.sh
@@ -90,18 +90,14 @@ mkdir -p "$HOME/.config/zed/themes"
 ln -sf "$DOTFILES_DIR/config/zed/settings.json" "$HOME/.config/zed/settings.json"
 ln -sf "$DOTFILES_DIR/config/zed/themes/catppuccin-green.json" "$HOME/.config/zed/themes/catppuccin-green.json"
 
-# --- 10. starship ---
-log "Linking starship config"
-ln -sf "$DOTFILES_DIR/config/starship.toml" "$HOME/.config/starship.toml"
-
-# --- 11. tfenv pinned version ---
+# --- 10. tfenv pinned version ---
 if command -v tfenv >/dev/null 2>&1; then
   log "Installing pinned terraform version via tfenv"
   tfenv install "$(cat "$DOTFILES_DIR/config/tfenv/version")"
   tfenv use "$(cat "$DOTFILES_DIR/config/tfenv/version")"
 fi
 
-# --- 12. Default shell ---
+# --- 11. Default shell ---
 if [[ "$SHELL" != */zsh ]]; then
   log "Setting default shell to zsh"
   chsh -s "$(command -v zsh)"
