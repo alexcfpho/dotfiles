@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Reproduces this machine's Ghostty, zsh, nvim, tmux, and zed config on a
-# fresh Mac.
+# Reproduces this machine's Ghostty, zsh, vim, nvim, tmux, and zed config
+# on a fresh Mac.
 # Idempotent: safe to re-run.
 #
 # Usage: ./install.sh
@@ -77,33 +77,50 @@ if [[ -e "$HOME/.config/nvim" && ! -L "$HOME/.config/nvim" ]]; then
   mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak.$(date +%s)"
 fi
 ln -sfn "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
+if command -v nvim >/dev/null 2>&1; then
+  log "Syncing nvim (lazy.nvim) plugins — pinned versions from lazy-lock.json"
+  nvim --headless "+Lazy! sync" +qa
+fi
 
-# --- 8. tmux (oh-my-tmux + local overrides) ---
+# --- 8. vim (vim-plug + material.vim theme) ---
+log "Linking .vimrc"
+ln -sf "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
+if [[ ! -f "$HOME/.vim/autoload/plug.vim" ]]; then
+  log "Bootstrapping vim-plug"
+  curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+if command -v vim >/dev/null 2>&1; then
+  log "Installing vim plugins (material.vim theme)"
+  vim -es -u "$HOME/.vimrc" -i NONE -c "PlugInstall --sync" -c "qa"
+fi
+
+# --- 9. tmux (oh-my-tmux + local overrides) ---
 clone_or_update https://github.com/gpakosz/.tmux "$HOME/.local/share/tmux/oh-my-tmux"
 mkdir -p "$HOME/.config/tmux"
 ln -sf "$HOME/.local/share/tmux/oh-my-tmux/.tmux.conf" "$HOME/.config/tmux/tmux.conf"
 ln -sf "$DOTFILES_DIR/config/tmux/tmux.conf.local" "$HOME/.config/tmux/tmux.conf.local"
 
-# --- 9. zed ---
+# --- 10. zed ---
 log "Linking Zed config"
 mkdir -p "$HOME/.config/zed/themes"
 ln -sf "$DOTFILES_DIR/config/zed/settings.json" "$HOME/.config/zed/settings.json"
 ln -sf "$DOTFILES_DIR/config/zed/themes/catppuccin-green.json" "$HOME/.config/zed/themes/catppuccin-green.json"
 
-# --- 10. tfenv pinned version ---
+# --- 11. tfenv pinned version ---
 if command -v tfenv >/dev/null 2>&1; then
   log "Installing pinned terraform version via tfenv"
   tfenv install "$(cat "$DOTFILES_DIR/config/tfenv/version")"
   tfenv use "$(cat "$DOTFILES_DIR/config/tfenv/version")"
 fi
 
-# --- 11. Claude Code status line ---
+# --- 12. Claude Code status line ---
 log "Linking Claude Code status line"
 mkdir -p "$HOME/.claude"
 ln -sf "$DOTFILES_DIR/claude/statusline.sh" "$HOME/.claude/statusline.sh"
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 
-# --- 12. Default shell ---
+# --- 13. Default shell ---
 if [[ "$SHELL" != */zsh ]]; then
   log "Setting default shell to zsh"
   chsh -s "$(command -v zsh)"
