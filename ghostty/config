@@ -3,10 +3,9 @@ font-size = 16
 font-thicken=true
 font-thicken-strength=1
 adjust-cell-height=1
-theme = Catppuccin Mocha
-background-opacity = 0.90
+theme = Catppuccin Frappe
+background-opacity = 1.0
 scrollbar = system
-custom-shader =./shaders/tft.glsl
 custom-shader =./shaders/bloom.glsl
 
 # From https://mwolson.org/blog/2025-11-12-ghostty-tmux-uniform-copy-paste/
