@@ -4,10 +4,10 @@ return {
     name = "catppuccin",
     priority = 1000, -- Load Catppuccin first so it's available for other plugins
     opts = {
-      flavour = "frappe", -- Specify the Frappé flavor
+      flavour = "mocha", -- Specify the Mocha flavor
       background = {
         light = "latte",
-        dark = "frappe",
+        dark = "mocha",
       },
     },
   },

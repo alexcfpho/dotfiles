@@ -4,7 +4,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 call plug#end()
 set termguicolors
-colorscheme catppuccin_frappe
+colorscheme catppuccin_mocha
 set tabstop=2
 set expandtab
 set softtabstop=2

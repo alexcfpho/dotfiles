@@ -62,12 +62,12 @@
       "type": "registry",
     },
   },
-  "icon_theme": "Catppuccin Frappé",
+  "icon_theme": "Catppuccin Mocha",
   "ui_font_size": 16.5,
   "buffer_font_size": 15,
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Catppuccin Macchiato (green)",
+    "dark": "Catppuccin Mocha (green)",
   },
 }
