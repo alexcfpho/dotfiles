@@ -1,11 +1,10 @@
 set backspace=indent,eol,start
 syntax enable
 call plug#begin('~/.vim/plugged')
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 call plug#end()
 set termguicolors
-let g:material_theme_style = 'palenight'
-colorscheme material
+colorscheme catppuccin_frappe
 set tabstop=2
 set expandtab
 set softtabstop=2
